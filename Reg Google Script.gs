@@ -1,13 +1,16 @@
-function myFunction(e) {
+function descriptionReponse(e) {
   
 	// general registration data from form
-	var className = e.values [1];
+	var className = e.values[1];
 	var teacherName = e.values[2];
 	var teacherEmail = e.values[3];
+	var coteacherName = e.values[4];
+	var coteacherEmail = e.values[5];
 	var classDesc = e.values[6];
 	var classAge = e.values[9];
 	var classCost = e.values[10];
 	var checkRecipient = e.values[11];
+	var responseUrl = e.getEditResponseUrl();
 
 	// Construct E-mail Subject
 	var subject = "Class Description Spring 2017 - ";
@@ -15,17 +18,29 @@ function myFunction(e) {
 	subject += " - ";
 	subject += className;
 
-	// Construct E-mail Message
-	var Message = "Welcome to Awana Clubs at Pittsford Community Church.\n\n";
-	Message = Message + "This e-mail confirms that we have received registration information for " + FirstName + " " + LastName + " for Awana this year at PCC.\n\n";
-	Message = Message + "The cost for your child to participate in " + Club + " this year is:    $" + FinalCost + ".\n\n";
-	Message = Message + "Please print this e-mail invoice upon receipt.  Submit the printed invoice with payment of cash or check (payable to PCC). "
-	Message = Message + "Invoice and payment should be delivered to the box outside Laura Thurston's office or mailed to:\n\n";
-	Message = Message + "   Pittsford Community Church\n   Attn: Awana\n   421 Marsh Road\n   Pittsford, NY 14534\n\n";
-	Message = Message + "The first night of club this year is Wednesday, September 21 at 6:30 pm.  See you then!\n\n";
-	Message = Message + "Sincerely,\n\nKathy Gonzales,\nAwana Commander\npittsfordccawana@gmail.com";
+	// Construct E-mail message
+	var message = "Thanks for submitting a class description!\n\n";
+	message += "This e-mail confirms that we have received your class information for " + className + ".\n\n";
+	message += "Please ensure the following information is correct:\n\n";
+	message += "Class Name: " + className + "\n";
+	message += "Teacher Name: " + teacherName + "\n";
+	if (coteacherName !== null) {
+		message += "Co-teacher Name: " + coteacherName + "\n";
+	}
+	message += "Age Range: " + classAge + "\n";
+	message += "Cost: " + classCost + "\n";
+	message += "Check made to: " + checkRecipient + "\n\n";
+	message += "If you need to edit your response, please click the following URL:\n\n";
+	message += responseUrl + "\n\n";
+	message += "If you have any questions or concerns please reply to this email.";
 
 	// Send e-mail
-	MailApp.sendEmail(UserEmail, Subject, Message);
+	MailApp.sendEmail({
+		to: teacherEmail,
+		subject: subject,
+		cc: coteacherEmail,
+		body: message,
+		replyTo: "mac68@rochester.rr.com"
+	});
 
 }
